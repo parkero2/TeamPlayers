@@ -1,0 +1,4 @@
+name: Teamplayers
+version: '${project.version}'
+main: com.parkerdev.teamplayers.Teamplayers
+api-version: 1.19
