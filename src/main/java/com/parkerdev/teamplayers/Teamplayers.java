@@ -34,12 +34,13 @@ public final class Teamplayers extends JavaPlugin implements Listener {
         // Plugin startup logic
         System.out.println("Teamplayers has been enabled!");
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
-        webhook1.setContent("Hello, world!");
+        webhook1.setContent("The server has started!");
         try {
             webhook1.execute();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        this.webhook1 = new DiscordWebhook(webhook);
     }
 
     @Override
@@ -101,5 +102,6 @@ public final class Teamplayers extends JavaPlugin implements Listener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        this.webhook1 = new DiscordWebhook(webhook);
     }
 }
