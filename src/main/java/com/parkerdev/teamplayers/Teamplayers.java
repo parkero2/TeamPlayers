@@ -11,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -22,20 +24,22 @@ import com.parkerdev.teamplayers.DiscordWebhook;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public final class Teamplayers extends JavaPlugin implements Listener {
     FileConfiguration config = getConfig();
     private static final String webhook = "https://discord.com/api/webhooks/1045616741339910204/9T2JtxruXKsuQFYa2T5NjaOrvdQrIfqLia1Mv5FGpb9RLB1pzu6VRHkYKHlr4R1qqpOY";
-
+    DiscordWebhook webhook1 = new DiscordWebhook(webhook);
     @Override
     public void onEnable() {
         // Plugin startup logic
         System.out.println("Teamplayers has been enabled!");
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
+        webhook1.setContent("Hello, world!");
+        try {
+            webhook1.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -87,5 +91,15 @@ public final class Teamplayers extends JavaPlugin implements Listener {
         Team t2 = manager.getMainScoreboard().getEntryTeam(killer.getName());
         manager.getMainScoreboard().getTeam(t2.getName()).addEntry(player.getName());
         Bukkit.broadcastMessage(player.getName() + " has been killed by " + killer.getName() + "! They are now on team " + t2.getName() + "!");
+        webhook1.addEmbed(new DiscordWebhook.EmbedObject()
+                .setTitle("Player Death")
+                .setDescription(player.getName() + " has been killed by " + killer.getName() + "! They are now on team " + t2.getName() + "!")
+                .setColor(Color.RED)
+                .setFooter("Teamplayers", null));
+        try {
+            webhook1.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
