@@ -17,6 +17,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
 
+import com.parkerdev.teamplayers.DiscordWebhook;
+
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -27,6 +29,7 @@ import org.json.simple.parser.ParseException;
 
 public final class Teamplayers extends JavaPlugin implements Listener {
     FileConfiguration config = getConfig();
+    private static final String webhook = "https://discord.com/api/webhooks/1045616741339910204/9T2JtxruXKsuQFYa2T5NjaOrvdQrIfqLia1Mv5FGpb9RLB1pzu6VRHkYKHlr4R1qqpOY";
 
     @Override
     public void onEnable() {
