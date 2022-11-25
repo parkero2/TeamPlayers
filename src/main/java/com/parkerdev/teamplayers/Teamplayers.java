@@ -3,10 +3,12 @@ package com.parkerdev.teamplayers;
 import com.google.gson.JsonElement;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
@@ -62,5 +64,25 @@ public final class Teamplayers extends JavaPlugin implements Listener {
         t.setCanSeeFriendlyInvisibles(true);
         t.setColor(color);
         t.addEntry(player.getName());
+    }
+
+    @EventHandler
+    //player death
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        //Get killer
+        Entity killer = player.getKiller();
+        if (killer == null) {
+            return;
+        }
+        //Get the scoreboard
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        //Remove player from their current team
+        Team t = manager.getMainScoreboard().getEntryTeam(player.getName());
+        manager.getMainScoreboard().getTeam(t.getName()).removeEntry(player.getName());
+        //Add player to killer's team
+        Team t2 = manager.getMainScoreboard().getEntryTeam(killer.getName());
+        manager.getMainScoreboard().getTeam(t2.getName()).addEntry(player.getName());
+        Bukkit.broadcastMessage(player.getName() + " has been killed by " + killer.getName() + "! They are now on team " + t2.getName() + "!");
     }
 }
