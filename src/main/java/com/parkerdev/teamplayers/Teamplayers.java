@@ -73,7 +73,6 @@ public final class Teamplayers extends JavaPlugin implements Listener {
         t.setColor(color);
         t.addEntry(player.getName());
     }
-
     @EventHandler
     //player death
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -92,10 +91,12 @@ public final class Teamplayers extends JavaPlugin implements Listener {
         Team t2 = manager.getMainScoreboard().getEntryTeam(killer.getName());
         manager.getMainScoreboard().getTeam(t2.getName()).addEntry(player.getName());
         Bukkit.broadcastMessage(player.getName() + " has been killed by " + killer.getName() + "! They are now on team " + t2.getName() + "!");
+        //Convert the killer's team color to an instance of java.awt.Color
+        Color color = Color.decode(t2.getColor().toString());
         webhook1.addEmbed(new DiscordWebhook.EmbedObject()
                 .setTitle("Player Death")
                 .setDescription(player.getName() + " has been killed by " + killer.getName() + "! They are now on team " + t2.getName() + "!")
-                .setColor(Color.RED)
+                .setColor(color)
                 .setFooter("Teamplayers", null));
         try {
             webhook1.execute();
